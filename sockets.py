@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
-# Copyright (c) 2013-2014 Abram Hindle
+# Copyright (c) 2013-2023 Abram Hindle, Geoffery Banh
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -84,7 +84,7 @@ def send_all(msg):
 
 
 def send_all_JSON(obj):
-    send_all(json.dumps(myWorld.world()))
+    send_all(json.dumps(obj))
 
 
 def set_listener(entity, data):
@@ -108,9 +108,9 @@ def read_ws(ws, client):
         while True:
             message = ws.receive()
             if message is not None:
-                jsonMsg = json.loads(message)
-                for entity in jsonMsg:
-                    myWorld.set(entity, jsonMsg[entity])
+                packet = json.loads(message)
+                for entity in packet:
+                    myWorld.set(entity, packet[entity])
                 send_all_JSON(myWorld.world())
             else:
                 break
@@ -136,7 +136,7 @@ def subscribe_socket(ws):
             # print(msg)
             ws.send(msg)
     except Exception as e:  # WebSocketError as e:
-        print("WS Error" + str(e))
+        print("WS Error " + str(e))
     finally:
         print("WS Closed")
         clients.remove(client)
