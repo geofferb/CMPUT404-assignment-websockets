@@ -265,7 +265,9 @@
                 try {
                     debug("WebSocket Recv:" + msg.data.length);
                     var data = JSON.parse(msg.data);
-                    world = data;
+                    for (let entity in data) {
+                        world[entity] = data[entity];
+                    }
                     drawNextFrame();
                 } catch (e) {
                     alert("socket on message: " + e);

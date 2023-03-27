@@ -111,7 +111,7 @@ def read_ws(ws, client):
                 packet = json.loads(message)
                 for entity in packet:
                     myWorld.set(entity, packet[entity])
-                send_all_JSON(myWorld.world())
+                send_all_JSON(packet)
             else:
                 break
     except Exception as e:
