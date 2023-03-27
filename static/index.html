@@ -44,15 +44,32 @@
         //XXX: TODO Make this prettier!
         function drawCircle(context, entity) {
             with (context) {
+                const dragging = entity["radius"] <= 10
                 beginPath();
-                lineWidth = 3;
+                lineWidth = 1;
                 var x = entity["x"];
                 var y = entity["y"];
                 //moveTo(x,y);
-                fillStyle = entity["colour"];
+                //                                      x0, y0, x1, y1
+                const gradient = createLinearGradient(0, 0, W - 1, H - 1);
+
+                //generated with https://angrytools.com/gradient/
+                if (dragging) { // 
+                    gradient.addColorStop(0.3, 'rgba(153, 180, 217)');
+                    gradient.addColorStop(0.7, 'rgba(255, 207, 42)');
+                    fillStyle = gradient;
+                }
+                else {
+                    fillStyle = entity["colour"]; // use solid colours for clicking circles
+                }
                 strokeStyle = fillStyle;
                 arc(x, y, (entity["radius"]) ? entity["radius"] : 50, 0, 2.0 * Math.PI, false);
-                stroke();
+                if (dragging) {
+                    fill() // fill the circles when dragging
+                }
+                else {
+                    stroke(); // stroke the circles when clicking
+                }
             }
         }
 
@@ -232,11 +249,11 @@
         // Add the application specific mouse listeners!
         //XXX: TODO Make these prettier!
         mouse.mousedowners.push(function (x, y, clicked, e) {
-            addEntityWithoutName({ 'x': x, 'y': y, 'colour': 'blue' });
+            addEntityWithoutName({ 'x': x, 'y': y, 'colour': 'LimeGreen', 'radius': 15 });
         });
 
         mouse.mouseuppers.push(function (x, y, clicked, e) {
-            addEntityWithoutName({ 'x': x, 'y': y, 'colour': 'red' });
+            addEntityWithoutName({ 'x': x, 'y': y, 'colour': 'red', 'radius': 15 });
         });
 
         mouse.mousedraggers.push(function (x, y, clicked, e) {
@@ -245,6 +262,7 @@
                 'radius': 10
             });
         });
+
 
 
         function update() {
@@ -263,7 +281,7 @@
             };
             socket.onmessage = function (msg) {
                 try {
-                    debug("WebSocket Recv:" + msg.data.length);
+                    debug("WebSocket Recv:" + msg.data);
                     var data = JSON.parse(msg.data);
                     for (let entity in data) {
                         world[entity] = data[entity];
