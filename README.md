@@ -21,6 +21,7 @@ Contributors / Licensing
 ========================
 
 Generally everything is LICENSE'D under the Apache 2 license by Abram Hindle.
+Assignment work by Geoffery Banh.
 
 freetests.py is LICENSE'D under a BSD-like license:
 
@@ -59,3 +60,7 @@ Contributors
 * Mark Galloway
 * Abram Hindle
 * Cole Mackenzie
+
+References
+==========
+https://github.com/abramhindle/WebSocketsExamples/blob/master/static/broadcast.html, licensed by Abram Hindle under the Apache 2 License
